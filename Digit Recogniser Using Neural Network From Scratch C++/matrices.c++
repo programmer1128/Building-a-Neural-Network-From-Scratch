@@ -1,11 +1,13 @@
-#include<iostream>
 #include<vector>
-
+#include<iostream>
 std::vector<std::vector<double>> multiply_matrix(const std::vector<std::vector<double>>& x, const std::vector<std::vector<double>>& y)
 {
       int x_row = x.size(); int x_col=x[0].size();
       int y_row = y.size(); int y_col = y[0].size();
       std::vector<std::vector<double>> result(x_row,std::vector<double>(y_col));
+      //std::cout<<"x row "<<x_row<<" x_col "<<x_col<<std::endl;
+      //std::cout<<"y row "<<y_row<<" y_col "<<y_col<<std::endl;
+      
       if(y_row!=x_col)
       {
            std::cout<<"matrix multiplication not possible"<<std::endl;
@@ -65,13 +67,13 @@ std::vector<std::vector<double>> subtract_matrix(const std::vector<std::vector<d
 std::vector<std::vector<double>> transpose_matrix(const std::vector<std::vector<double>>& x)
 {
       int x_row = x.size(); int x_col=x[0].size();
-      std::vector<std::vector<double>> result(x_row,std::vector<double>(x_col));
+      std::vector<std::vector<double>> result(x_col,std::vector<double>(x_row));
       
       //for row of x
-      for(int i=0;i<x_row;i++)
+      for(int i=0;i<x_col;i++)
       {
            //for column of y
-           for(int k=0;k<x_col;k++)
+           for(int k=0;k<x_row;k++)
            {
                result[i][k]=x[k][i];
            }
