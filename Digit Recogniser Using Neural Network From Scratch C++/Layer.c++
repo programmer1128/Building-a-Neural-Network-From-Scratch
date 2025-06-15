@@ -23,6 +23,7 @@
          //initialsing the weights of this layer 
          weights.resize(output_size,std::vector<double> (input_size));
 
+         
          //using values from probability distribution of mean =0
          //and standard deviation = 1/sqrt(input_size)
          //this provides better results
@@ -48,12 +49,18 @@
      //this function calculate the input for the next layer 
      std::vector<std::vector<double>> Layer::forward(const std::vector<std::vector<double>> &input)
      {
-         std::cout<<"forward method inside Layer is called"<<std::endl;
-         std::vector<std::vector<double>> result;
+         //std::cout<<"forward method inside Layer is called"<<std::endl;
+         std::vector<std::vector<double>> result(weights.size(),std::vector<double> (input[0].size()));
+         //std::cout<<"weight matrix row "<<weights.size()<<" weight maatrixx column "<<weights[0].size()<<std::endl;
          result= multiply_matrix(weights,input);
-                 
+
+         output.resize(result.size(),std::vector<double>(result[0].size()));       
+         
+         inputs.resize(input.size(),std::vector<double> (input[0].size()));
          result = sigma_of_matrix(result);
+         
          output=result;
+         
          inputs=input;
          return result;
      }
@@ -62,20 +69,36 @@
      void Layer::compute_error(const std::vector<std::vector<double>>& target)
      {
          //compute the sigma derivative of the output matrix 
+         //std::cout<<"inside the compute error for output layer and last hidden layer"<<std::endl;
          std::vector<std::vector<double>> result = sigma_derivative_of_matrix(output);
+         //std::cout<<"after the sigma derivative function "<<std::endl;
+         //std::cout<<"target row size "<<target.size()<<" target column size "<<target[0].size()<<std::endl;
+         //std::cout<<"output row size "<<output.size()<<" output column size "<<output[0].size()<<std::endl;
+         //std::cout<<"result row size "<<result.size()<<" result column size "<<result[0].size()<<std::endl;
+
+         
          int row = result.size(); int col = result[0].size();
+
+         
+         
          for(int i=0;i<row;i++)
          {
              for(int k=0;k<col;k++)
              {
+                 
                  result[i][k]*=output[i][k]-target[i][k];
              }
          }
+         
 
          delta = result;
 
+         
+
          std::vector<std::vector<double>> input_transpose= transpose_matrix(inputs);
+         
          std::vector<std::vector<double>> error_gradient = multiply_matrix(result,input_transpose);
+         
          update_weights(0.01,error_gradient);
      }
 
@@ -133,4 +156,3 @@
      {
          return  delta;
      }
-
