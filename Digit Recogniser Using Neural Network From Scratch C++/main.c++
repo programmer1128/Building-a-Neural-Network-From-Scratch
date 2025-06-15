@@ -112,8 +112,8 @@ int main()
 
      Network net(architecture);  // Instantiate the network    
 
-     std::string image_file = "C:/Users/aritr/Downloads/train-images-idx3-ubyte/train-images.idx3-ubyte";
-     std::string label_file = "C:/Users/aritr/Downloads/train-labels-idx1-ubyte/train-labels.idx1-ubyte";
+     std::string image_file = "/home/aritra/Downloads/train-images-idx3-ubyte";
+     std::string label_file = "/home/aritra/Downloads/train-labels-idx1-ubyte";
 
      try {
         std::cout << "Inside the try catch" << std::endl;
@@ -129,7 +129,7 @@ int main()
      std::cerr << "Error occurred: " << ex.what() << std::endl;
      }
 
-     std::cout<<"calling the train function"<<std::endl;
+
      //net.train_network(X, Y, 10, 0.01); // epochs = 10, learning_rate = 0.01
 
      return 0;
