@@ -17,6 +17,10 @@ class Network
                     int epochs,
                     double learning_rate);
 
+
+            void save_model(const std::string& filename) const;
+            void load_model(const std::string& filename);
+                    
             
              
 };
