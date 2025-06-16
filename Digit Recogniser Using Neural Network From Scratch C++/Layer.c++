@@ -5,10 +5,15 @@
 #include<cmath>
 #include<random>
 #include"Layer.hpp"
+#include<fstream>
 
+     Layer::Layer()
+     : input_size(0), output_size(0)
+     {
+         // Empty constructor used for loading later
+     }
 
-
-     Layer:: Layer(int input_size, int output_size)
+     Layer::Layer(int input_size, int output_size)
      {
          //the weight matrix has rows= number of output neurons because
          //from one node of current layer there will be m links to the 
@@ -156,3 +161,40 @@
      {
          return  delta;
      }
+
+     //now after our model is trained we need to store the trained model
+     //so that we do not have to train the neural network for every input
+     void Layer::save(std::ofstream& out) const 
+     {
+         int rows = weights.size();
+         int cols = weights[0].size();
+         out << rows << " " << cols << "\n";
+         for (const auto& row : weights)
+         {
+             for (double w : row)
+             {
+                 out << w << " ";
+             }
+            
+             out << "\n";
+         }
+            
+     }
+    
+     void Layer::load(std::ifstream& in) 
+     {
+         int rows, cols;
+         in >> rows >> cols;
+         weights.resize(rows, std::vector<double>(cols));
+         for (auto& row : weights)
+         {
+             for (double& w : row)
+             {
+                 in >> w;
+             }
+             
+         }
+            
+    
+     }
+    
