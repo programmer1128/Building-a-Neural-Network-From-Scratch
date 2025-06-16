@@ -1,7 +1,7 @@
 #include<iostream>
 #include"Layer.hpp"
 #include"Network.hpp"
-
+#include<fstream>
 
      //constructor of class
 
@@ -117,3 +117,46 @@
                  }
 
              }//end of training method
+
+
+
+             void Network::save_model(const std::string& filename) const 
+             {
+                 std::ofstream out(filename);
+                 if (!out.is_open()) 
+                 {
+                    std::cerr << "Could not open file for saving model.\n";
+                    return;
+                 }
+            
+                 out << layers.size() << "\n";
+                 for (const auto& layer : layers)
+                 {
+                     layer.save(out);
+                 }
+                  
+                
+                 out.close();
+             }
+            
+             void Network::load_model(const std::string& filename) 
+             {
+                 std::ifstream in(filename);
+                 if (!in.is_open()) 
+                 {
+                     std::cerr << "Could not open file for loading model.\n";
+                     return;
+                 }
+            
+                 int layer_count;
+                 in >> layer_count;
+                 layers.resize(layer_count);
+                 for (auto& layer : layers)
+                 {
+                     layer.load(in);
+                 }
+                     
+            
+                 in.close();
+             }
+            
