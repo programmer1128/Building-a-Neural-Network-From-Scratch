@@ -7,6 +7,7 @@
 #include"sigma_function.hpp"
 #include<cmath>
 #include<random>
+#include<fstream>
 
 class Layer
 {
@@ -28,6 +29,8 @@ class Layer
      
      
      public:
+                
+             Layer();
              Layer(int input_size, int output_size);
 
              std::vector<std::vector<double>> forward(const std::vector<std::vector<double>> &input);
@@ -41,6 +44,11 @@ class Layer
              std::vector<std::vector<double>> get_weights();
 
              std::vector<std::vector<double>> get_delta();
+
+             void save(std::ofstream& out) const;
+             
+             void load(std::ifstream& in);
+
 
 };
 
