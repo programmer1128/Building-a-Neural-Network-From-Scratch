@@ -112,22 +112,38 @@ int main()
 
      Network net(architecture);  // Instantiate the network    
 
-     std::string image_file = "/home/aritra/Downloads/train-images-idx3-ubyte";
-     std::string label_file = "/home/aritra/Downloads/train-labels-idx1-ubyte";
-
-     try {
-        std::cout << "Inside the try catch" << std::endl;
-     auto X = load_mnist_images(image_file);
-     auto Y = load_mnist_labels(label_file);
-     std::cout << "MNIST data loaded successfully." << std::endl;
-
-     std::cout<<"calling the train function"<<std::endl;
-     net.train_network(X, Y, 10, 0.01); // epochs = 10, learning_rate = 0.01
-     } 
-     catch (const std::exception& ex) 
+     std::cout<<"Input T if you want to train the model or U if you want to use the model "<<std::endl;
+     char c;
+     std::cin>>c;
+     if(c=='T')
      {
-     std::cerr << "Error occurred: " << ex.what() << std::endl;
+         std::string image_file = "/home/aritra/Downloads/train-images-idx3-ubyte";
+         std::string label_file = "/home/aritra/Downloads/train-labels-idx1-ubyte";
+   
+         try 
+         {
+             std::cout << "Inside the try catch" << std::endl;
+             auto X = load_mnist_images(image_file);
+             auto Y = load_mnist_labels(label_file);
+             std::cout << "MNIST data loaded successfully." << std::endl;
+   
+             std::cout<<"calling the train function"<<std::endl;
+             net.train_network(X, Y, 7, 0.01); // epochs = 10, learning_rate = 0.01
+         } 
+         catch (const std::exception& ex) 
+         {
+             std::cerr << "Error occurred: " << ex.what() << std::endl;
+         }
+   
+   
+         net.save_model("model.txt");
      }
+     else if(c=='U')
+     {
+         net.load_model("model.txt");
+         std::cout << "Model loaded from 'trained_model.txt'." << std::endl;
+     }
+     
 
 
      //net.train_network(X, Y, 10, 0.01); // epochs = 10, learning_rate = 0.01
