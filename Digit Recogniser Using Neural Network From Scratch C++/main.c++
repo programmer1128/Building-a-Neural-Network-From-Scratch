@@ -5,7 +5,8 @@
 #include"Layer.hpp"
 #include"Network.hpp"
 #include <fstream>
-
+#include<opencv2/opencv.hpp>
+#include<filesystem>
 
 uint32_t bswap32(uint32_t x) 
 {
@@ -107,7 +108,7 @@ int main()
      {
         {784, 16},  
         {16, 16},
-        {16,10}   
+        {16,10}
      };
 
      Network net(architecture);  // Instantiate the network    
@@ -128,7 +129,7 @@ int main()
              std::cout << "MNIST data loaded successfully." << std::endl;
    
              std::cout<<"calling the train function"<<std::endl;
-             net.train_network(X, Y, 7, 0.01); // epochs = 10, learning_rate = 0.01
+             net.train_network(X, Y, 10, 0.0001); // epochs = 10, learning_rate = 0.01
          } 
          catch (const std::exception& ex) 
          {
@@ -136,12 +137,55 @@ int main()
          }
    
    
-         net.save_model("model.txt");
+         net.save_model("trained_model.mlp");
      }
      else if(c=='U')
      {
-         net.load_model("model.txt");
-         std::cout << "Model loaded from 'trained_model.txt'." << std::endl;
+         std::string path="/home/aritra/Desktop/Neural_Network_From_Scratch/digit_6.png";
+         
+         
+         cv::Mat image = cv::imread(path,cv::IMREAD_GRAYSCALE);
+
+         if(image.empty())
+         {
+             std::cout<<"No image found"<<std::endl;
+             return -1;
+         }
+
+         //resizing the image to 28*28 pixels as that is the neuron settings
+         cv::resize(image,image,cv::Size(28,28));
+         image.convertTo(image,CV_64F,1.0/255.0);
+
+         std::vector<std::vector<double>> input(784, std::vector<double>(1));
+         int index = 0;
+         for (int i = 0; i < image.rows; ++i) {
+             for (int j = 0; j < image.cols; ++j) {
+                 input[index++][0] = image.at<double>(i, j);
+                 }
+         }
+         net.load_model("trained_model.mlp");
+         std::cout << "Model loaded from 'model.txt'." << std::endl; // or whatever your file is
+     
+         std::cout << "Input vector shape: " << input.size() << " x " << input[0].size() << std::endl;
+         std::vector<std::vector<double>> output = net.forward_propagation(input);
+
+// Find the index of the highest value in output[0] – that’s your digit!
+         double max=INT_MIN; int pos=0;
+         for(int i=0;i<output.size();i++)
+         {
+             if(output[i][0]>max)
+             {
+                 max=output[i][0];
+                 pos=i;
+             }
+             //std::cout<<output[i][0]<<" ";
+         }
+         std::filesystem::path filepath = path;
+
+         std::string digit= filepath.filename().string();
+
+         std::cout << "Predicted Digit: " <<pos<< std::endl;
+
      }
      
 
