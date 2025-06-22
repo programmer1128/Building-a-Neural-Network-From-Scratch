@@ -246,37 +246,57 @@
      {
          return biases;
      }
+     
      //now after our model is trained we need to store the trained model
      //so that we do not have to train the neural network for every input
      void Layer::save(std::ofstream& out) const 
      {
-         int rows = weights.size();
-         int cols = weights[0].size();
-         out << rows << " " << cols << "\n";
-         for (const auto& row : weights)
+         out.write(reinterpret_cast<const char*>(&input_size), sizeof(int));
+         out.write(reinterpret_cast<const char*>(&output_size), sizeof(int));
+
+         // Save weights
+         int weight_rows = weights.size();
+         int weight_cols = weights[0].size();
+         out.write(reinterpret_cast<const char*>(&weight_rows), sizeof(int));
+         out.write(reinterpret_cast<const char*>(&weight_cols), sizeof(int));
+         for (const auto& row : weights) 
          {
-             for (double w : row)
-             {
-                 out << w << " ";
-             }
-            
-             out << "\n";
+             out.write(reinterpret_cast<const char*>(row.data()), sizeof(double) * weight_cols);
+         }
+
+         // Save biases
+         int bias_rows = biases.size();
+         int bias_cols = biases[0].size();
+         out.write(reinterpret_cast<const char*>(&bias_rows), sizeof(int));
+         out.write(reinterpret_cast<const char*>(&bias_cols), sizeof(int));
+         for (const auto& row : biases) 
+         {
+             out.write(reinterpret_cast<const char*>(row.data()), sizeof(double) * bias_cols);
          }
             
      }
     
      void Layer::load(std::ifstream& in) 
      {
-         int rows, cols;
-         in >> rows >> cols;
-         weights.resize(rows, std::vector<double>(cols));
-         for (auto& row : weights)
+         in.read(reinterpret_cast<char*>(&input_size), sizeof(int));
+         in.read(reinterpret_cast<char*>(&output_size), sizeof(int));
+
+         int weight_rows, weight_cols;
+         in.read(reinterpret_cast<char*>(&weight_rows), sizeof(int));
+         in.read(reinterpret_cast<char*>(&weight_cols), sizeof(int));
+         weights.resize(weight_rows, std::vector<double>(weight_cols));
+         for (auto& row : weights) 
          {
-             for (double& w : row)
-             {
-                 in >> w;
-             }
-             
+             in.read(reinterpret_cast<char*>(row.data()), sizeof(double) * weight_cols);
+         }
+
+         int bias_rows, bias_cols;
+         in.read(reinterpret_cast<char*>(&bias_rows), sizeof(int));
+         in.read(reinterpret_cast<char*>(&bias_cols), sizeof(int));
+         biases.resize(bias_rows, std::vector<double>(bias_cols));
+         for (auto& row : biases) 
+         {
+             in.read(reinterpret_cast<char*>(row.data()), sizeof(double) * bias_cols);
          }
             
     
