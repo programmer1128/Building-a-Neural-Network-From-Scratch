@@ -196,41 +196,57 @@ Network:: Network(std::vector<std::pair<int,int>> sizes)
 
      void Network::save_model(const std::string& filename) const 
      {
-         std::ofstream out(filename);
+         std::ofstream out(filename, std::ios::binary);
          if (!out.is_open()) 
          {
-             std::cerr << "Could not open file for saving model.\n";
-             return;
+             throw std::runtime_error("Could not open file to save model.");
          }
-            
-         out << layers.size() << "\n";
-         for (const auto& layer : layers)
+
+         // Write header for validation
+         out.write("MLP", 3);  // File header
+
+         // Write number of layers
+         int num_layers = layers.size();
+         out.write(reinterpret_cast<const char*>(&num_layers), sizeof(int));
+
+         // Serialize each layer
+         for (const auto& layer : layers) 
          {
              layer.save(out);
          }
-                  
-                
+
          out.close();
      }
             
      void Network::load_model(const std::string& filename) 
      {
-         std::ifstream in(filename);
+         std::ifstream in(filename, std::ios::binary);
          if (!in.is_open()) 
          {
-             std::cerr << "Could not open file for loading model.\n";
-             return;
+             throw std::runtime_error("Could not open file to load model.");
          }
-            
-         int layer_count;
-         in >> layer_count;
-         layers.resize(layer_count);
-         for (auto& layer : layers)
+
+         // Validate header
+         char header[3];
+         in.read(header, 3);
+         if (std::string(header, 3) != "MLP") 
+         {
+             throw std::runtime_error("Invalid model file format.");
+         }
+
+         // Load number of layers
+         int num_layers;
+         in.read(reinterpret_cast<char*>(&num_layers), sizeof(int));
+
+         layers.clear();
+         layers.resize(num_layers);
+
+         // Deserialize each layer
+         for (auto& layer : layers) 
          {
              layer.load(in);
          }
-                     
-            
+
          in.close();
      }
             
