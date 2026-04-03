@@ -42,7 +42,7 @@ for(int i = 0; i < output_size; i++)
 
 
 2. Forward PropagationData flows from the input layer through hidden layers to generate a prediction. For any given layer $l$, the linear combination of inputs, weights, and biases is calculated as
-                           $$Z^{(l)} = W^{(l)} A^{(l-1)} + b^{(l)}$$
+                            $\Large \$Z^{(l)} = W^{(l)} A^{(l-1)} + b^{(l)}$$
 
 C++ Implementation (Layer.c++):
 
@@ -63,7 +63,7 @@ for(int i = 0; i < result.size(); i++)
 ```
 
 3. Activation FunctionsHidden Layers (ReLU): To introduce non-linearity, we use the Rectified Linear Unit.
-                                     $$f(x) = \max(0, x)$$
+                                    $\Large \$f(x) = \max(0, x)$$
 
 C++ Implementation (functions.cpp):
 
@@ -77,7 +77,7 @@ double relu(double x)
 
 
 4. Output Layer (Softmax): To convert raw scores into a probability distribution, we use Softmax. To maintain numerical stability (preventing floating-point overflow from large exponentials), we subtract the maximum value in the output vector before exponentiation:
-                  $$\sigma(z_i) = \frac{e^{z_i - \max(z)}}{\sum_j e^{z_j - \max(z)}}$$
+              $\Large   \$\sigma(z_i) = \frac{e^{z_i - \max(z)}}{\sum_j e^{z_j - \max(z)}}$$
 
 C++ Implementation (functions.cpp):
 
@@ -108,7 +108,7 @@ for (int i = 0; i < z.size(); i++)
 
 
 5. Loss Function (Categorical Cross-Entropy)To measure how far off the network's predictions ($\hat{y}$) are from the actual true labels ($y$), the network calculates Categorical Cross-Entropy loss:
-                    $$L = - \sum_{i=1}^{C} y_i \log(\hat{y}_i)$$
+                      $\Large \$L = - \sum_{i=1}^{C} y_i \log(\hat{y}_i)$$
 
 ```cpp
 C++ Implementation (Network.c++):
@@ -126,7 +126,7 @@ for (int j = 0; j < 10; ++j)
 
 
 6. Backpropagation & OptimizationThe network learns by calculating the gradient of the loss function and moving backward through the layers. For the output layer using Softmax and Cross-Entropy, the error gradient ($\delta$) simplifies to the difference between predictions and targets:
-                      $$\delta^{(L)} = \hat{y} - y$$
+                  $\Large     \$\delta^{(L)} = \hat{y} - y$$
 
 ```cpp
 C++ Implementation (Layer.c++ - Output Layer):
@@ -147,7 +147,7 @@ for(int i = 0; i < row; i++)
 
 For hidden layers, the error is propagated backward using the derivative of the ReLU function ($f'(Z^{(l)})$) and the transposed weights of the next layer:
 
-$$\delta^{(l)} = (W^{(l+1)})^T \delta^{(l+1)} \odot f'(Z^{(l)})$$
+  $\Large \$\delta^{(l)} = (W^{(l+1)})^T \delta^{(l+1)} \odot f'(Z^{(l)})$$
 
 C++ Implementation (Layer.c++ - Hidden Layers):
 ```cpp
@@ -170,7 +170,7 @@ delta = propagated_error;
 
 
 Finally, weights are updated using Stochastic Gradient Descent (SGD):
-$$W^{(l)} = W^{(l)} - \alpha \frac{\partial L}{\partial W^{(l)}}$$
+  $\Large \$W^{(l)} = W^{(l)} - \alpha \frac{\partial L}{\partial W^{(l)}}$$
 
 
 C++ Implementation (Layer.c++):
