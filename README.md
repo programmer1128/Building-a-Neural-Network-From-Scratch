@@ -19,7 +19,7 @@ This section outlines the mathematics driving the network and how they are trans
 
 1. Weight Initialization (He Initialization)To ensure the network learns effectively when using ReLU activations, weights are initialized using He Initialization. This draws weights from a normal distribution with a mean of $0$ and a standard deviation of
 
-                                            $\sqrt{\frac{2}{\text{input\_size}}}$.
+   $\sqrt{\frac{2}{\text{input\_size}}}$.
 
 C++ Implementation (Layer.c++):
 
@@ -30,8 +30,10 @@ C++
 std::default_random_engine generator;
 std::normal_distribution<double> distribution(0.0, std::sqrt(2.0/input_size));
 
-for(int i = 0; i < output_size; i++) {
-    for(int k = 0; k < input_size; k++) {
+for(int i = 0; i < output_size; i++)
+{
+     for(int k = 0; k < input_size; k++)
+    {
         weights[i][k] = distribution(generator);
     }
 }
@@ -51,8 +53,10 @@ std::vector<std::vector<double>> result(weights.size(), std::vector<double>(inpu
 result = multiply_matrix(weights, input);
 
 // Z = Z + b
-for(int i = 0; i < result.size(); i++) {
-    for(int k = 0; k < result[0].size(); k++) {
+for(int i = 0; i < result.size(); i++)
+{
+     for(int k = 0; k < result[0].size(); k++)
+    {
         result[i][k] += (double)biases[i][k];
     }
 }
@@ -65,7 +69,8 @@ for(int i = 0; i < result.size(); i++) {
 C++ Implementation (functions.cpp):
 
 ```cpp
-double relu(double x) {
+double relu(double x)
+{
      return std::max(0.0, x);
 }
 
@@ -80,10 +85,12 @@ C++ Implementation (functions.cpp):
 ```cpp
 // Find max element for numerical stability
 double max_val = -std::numeric_limits<double>::infinity();
-for (int i = 0; i < z.size(); i++) {
-    for (int k = 0; k < z[0].size(); k++) {
-        if (z[i][k] > max_val) max_val = z[i][k];
-    }
+for (int i = 0; i < z.size(); i++)
+{
+     for (int k = 0; k < z[0].size(); k++)
+     {
+         if (z[i][k] > max_val) max_val = z[i][k];
+     }
 }
 
 // Compute sum of exp(x - max_val) and normalize
@@ -107,7 +114,8 @@ C++ Implementation (Network.c++):
 
 
 double sample_loss = 0.0;
-for (int j = 0; j < 10; ++j) {
+for (int j = 0; j < 10; ++j)
+{
     // Avoid log(0) by adding a small epsilon
     double p = std::max(output[j][0], 1e-15);
     sample_loss += -target[j][0] * std::log(p);
@@ -125,8 +133,10 @@ C++ Implementation (Layer.c++ - Output Layer):
 std::vector<std::vector<double>> result = output;
 delta = result;
          
-for(int i = 0; i < row; i++) {
-    for(int k = 0; k < col; k++) {
+for(int i = 0; i < row; i++)
+{
+    for(int k = 0; k < col; k++)
+    {
         delta[i][k] -= target[i][k]; // prediction - target
     }
 }
@@ -146,8 +156,10 @@ std::vector<std::vector<double>> propagated_error = multiply_matrix(next_layer_w
 
 // Element-wise multiplication with ReLU derivative
 std::vector<std::vector<double>> relu_deriv = relu_derivative_of_matrix(output);
-for(int i = 0; i < row; i++) {
-    for(int k = 0; k < col; k++) {
+for(int i = 0; i < row; i++)
+{
+    for(int k = 0; k < col; k++)
+    {
         propagated_error[i][k] *= relu_deriv[i][k];
     }
 }
@@ -165,8 +177,10 @@ C++ Implementation (Layer.c++):
 ```cpp
 void Layer::update_weights(double learning_rate, const std::vector<std::vector<double>> &error) {
     int row = weights.size(); int col = weights[0].size();
-    for(int i = 0; i < row; i++) {
-        for(int k = 0; k < col; k++) {
+    for(int i = 0; i < row; i++)
+    {
+        for(int k = 0; k < col; k++)
+        {
             weights[i][k] -= learning_rate * (error[i][k]);
         }
     }
