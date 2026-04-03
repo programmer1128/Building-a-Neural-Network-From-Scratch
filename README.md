@@ -19,7 +19,6 @@ This section outlines the mathematics driving the network and how they are trans
 
 1. Weight Initialization (He Initialization)To ensure the network learns effectively when using ReLU activations, weights are initialized using He Initialization. This draws weights from a normal distribution with a mean of $0$ and a standard deviation of $\sqrt{\frac{2}{\text{input\_size}}}$.
 
-
 C++ Implementation (Layer.c++):
 
 C++
