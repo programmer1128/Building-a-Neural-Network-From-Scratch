@@ -216,23 +216,28 @@ CMake (v3.10.0 or higher).
 OpenCV (Ensure OpenCV_DIR is correctly set in the CMakeLists.txt or your system environment variables to point to your OpenCV build directory).
 
 Build Instructions
-Clone the repository and navigate into it:
 
-Bash
+1)Clone the repository and navigate into it:
+
+```Bash
 git clone <your-repository-url>
 cd <your-repository-directory>
-Create a build directory:
+```
+2)Create a build directory:
 
-Bash
+```Bash
 mkdir build
 cd build
-Generate the build files using CMake:
+```
+3)Generate the build files using CMake:
 (Note: If your OpenCV is installed in a custom location, ensure the path in CMakeLists.txt is correct for your system before running this).
 
-Bash
+```Bash
 cmake ..
-Compile the executable:
+```
+4)Compile the executable:
 
-Bash
+```Bash
 cmake --build .
+```
 This will generate the Neural_Network_From_Scratch executable in your build directory.
