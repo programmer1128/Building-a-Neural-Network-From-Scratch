@@ -19,7 +19,7 @@ This section outlines the mathematics driving the network and how they are trans
 
 1. Weight Initialization (He Initialization)To ensure the network learns effectively when using ReLU activations, weights are initialized using He Initialization. This draws weights from a normal distribution with a mean of $0$ and a standard deviation of
 
-   $\sqrt{\frac{2}{\text{input\_size}}}$.
+   $\sqrt{\frac{2}{\text{input\_size}}}$
 
 C++ Implementation (Layer.c++):
 
@@ -32,7 +32,7 @@ std::normal_distribution<double> distribution(0.0, std::sqrt(2.0/input_size));
 
 for(int i = 0; i < output_size; i++)
 {
-     for(int k = 0; k < input_size; k++)
+    for(int k = 0; k < input_size; k++)
     {
         weights[i][k] = distribution(generator);
     }
@@ -55,7 +55,7 @@ result = multiply_matrix(weights, input);
 // Z = Z + b
 for(int i = 0; i < result.size(); i++)
 {
-     for(int k = 0; k < result[0].size(); k++)
+    for(int k = 0; k < result[0].size(); k++)
     {
         result[i][k] += (double)biases[i][k];
     }
@@ -95,8 +95,10 @@ for (int i = 0; i < z.size(); i++)
 
 // Compute sum of exp(x - max_val) and normalize
 double sum = 0.0;
-for (int i = 0; i < z.size(); i++) {
-    for (int k = 0; k < z[0].size(); k++) {
+for (int i = 0; i < z.size(); i++)
+{
+    for (int k = 0; k < z[0].size(); k++)
+    {
         output[i][k] = std::exp(z[i][k] - max_val);
         sum += output[i][k];
     }
