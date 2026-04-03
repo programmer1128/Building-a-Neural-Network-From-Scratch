@@ -17,9 +17,9 @@ A complete, dependency-free implementation of a Multilayer Perceptron (MLP) Neur
 Mathematical Foundations & Implementation
 This section outlines the mathematics driving the network and how they are translated into the custom C++ codebase.
 
-1. Weight Initialization (He Initialization)To ensure the network learns effectively when using ReLU activations, weights are initialized using He Initialization. This draws weights from a normal distribution with a mean of $0$ and a standard deviation of
+1.To ensure the network learns effectively when using ReLU activations, weights are initialized using **He Initialization**. This draws weights from a normal distribution with a mean of $0$ and a standard deviation of 
+                                       $\sqrt{\frac{2}{\text{input\_size}}}$
 
-   $\sqrt{\frac{2}{\text{input\_size}}}$
 
 C++ Implementation (Layer.c++):
 
