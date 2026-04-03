@@ -18,7 +18,7 @@ Mathematical Foundations & Implementation
 This section outlines the mathematics driving the network and how they are translated into the custom C++ codebase.
 
 1.To ensure the network learns effectively when using ReLU activations, weights are initialized using **He Initialization**. This draws weights from a normal distribution with a mean of 0 and a standard deviation of 
-         $\displaystyle     $\sqrt{\frac{2}{\text{input size}}}$
+         $\displaystyle  \sqrt{\frac{2}{\text{input size}}}$
 
 C++ Implementation (Layer.c++):
 
