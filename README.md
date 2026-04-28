@@ -1,9 +1,9 @@
-Multilayer Perceptron (MLP) from Scratch in C++
+## Multilayer Perceptron (MLP) from Scratch in C++
 
 
 A complete, dependency-free implementation of a Multilayer Perceptron (MLP) Neural Network written purely in C++. This project builds everything from the ground up, including custom matrix operations, forward and backward propagation algorithms, loss calculations, and binary model serialization.Currently, the network architecture is configured to tackle the classic MNIST digit recognition problem (784 inputs -> 10 outputs).
 
-🚀 Key Features
+## 🚀 Key Features
 1)Zero Dependencies: No external linear algebra or machine learning libraries were used.
 
 2)Custom Linear Algebra: Matrix multiplication, addition, subtraction, and transposition implemented from scratch.
@@ -14,7 +14,7 @@ A complete, dependency-free implementation of a Multilayer Perceptron (MLP) Neur
 
 5)Binary Serialization: Custom .save() and .load() functionality to export and import trained model weights as binary files with a custom MLP header.
 
-Mathematical Foundations & Implementation
+## Mathematical Foundations & Implementation
 This section outlines the mathematics driving the network and how they are translated into the custom C++ codebase.
 
 1.To ensure the network learns effectively when using ReLU activations, weights are initialized using **He Initialization**. This draws weights from a normal distribution with a mean of 0 and a standard deviation of 
@@ -190,7 +190,7 @@ void Layer::update_weights(double learning_rate, const std::vector<std::vector<d
 ```
 
 
-📂 Project Structure
+## 📂 Project Structure
 Network.hpp / Network.c++: The core controller. Assembles the Layer objects, manages the training loop (epochs), computes Cross-Entropy loss, tracks accuracy, and handles saving/loading the final model.
 
 Layer.hpp / Layer.c++: Represents a single layer in the network. Manages its own weight and bias matrices, performs forward passes, and calculates gradients during backpropagation.
@@ -203,7 +203,7 @@ sigma_function.c++: Contains standard Sigmoid functions (available as an alterna
 
 
 
-Model Serialization
+## Model Serialization
 The network can be saved to disk so you don't have to retrain it for every inference run. The save_model function writes the topology and exact floating-point weights/biases into a binary file.
 
 C++
@@ -220,40 +220,3 @@ Input Dimensions: The train_network loop in Network.c++ currently hardcodes the 
 
 Batch Size: The network currently processes training data sequentially (Stochastic Gradient Descent with a batch size of 1).
 
-
-🛠️ Usage & Compilation
-This project uses CMake for its build system and requires OpenCV to be installed on your machine.
-
-Prerequisites
-A modern C++ compiler supporting C++20.
-
-CMake (v3.10.0 or higher).
-
-OpenCV (Ensure OpenCV_DIR is correctly set in the CMakeLists.txt or your system environment variables to point to your OpenCV build directory).
-
-Build Instructions
-
-1)Clone the repository and navigate into it:
-
-```Bash
-git clone <your-repository-url>
-cd <your-repository-directory>
-```
-2)Create a build directory:
-
-```Bash
-mkdir build
-cd build
-```
-3)Generate the build files using CMake:
-(Note: If your OpenCV is installed in a custom location, ensure the path in CMakeLists.txt is correct for your system before running this).
-
-```Bash
-cmake ..
-```
-4)Compile the executable:
-
-```Bash
-cmake --build .
-```
-This will generate the Neural_Network_From_Scratch executable in your build directory.
